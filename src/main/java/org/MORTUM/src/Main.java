@@ -23,6 +23,7 @@ public class Main {
                 InputMode.FILE_MODE);
         CLIReader cliReader = new CLIReader();
         CommandExecutor commandExecutor = new CommandExecutor(commandManagerUser, commandManagerNonUser, cliReader);
+
         xmlFileReader.load(CollectionHolder.getInstance());
         commandExecutor.startProgram();
     }
