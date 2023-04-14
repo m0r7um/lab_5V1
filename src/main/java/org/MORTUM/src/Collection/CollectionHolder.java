@@ -7,14 +7,14 @@ import org.MORTUM.src.Collection.Elements.Fields.Semester;
 import org.MORTUM.src.Collection.Elements.StudyGroup;
 
 import org.MORTUM.src.Collection.Elements.Fields.Color;
-import org.MORTUM.src.FileProcessing.XMLFileReader;
+import org.MORTUM.src.Exceptions.ValidationElementsException;
 import org.MORTUM.src.FileProcessing.XMLFileWriter;
 
+import javax.xml.bind.ValidationException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.File;
 import java.util.*;
 
 /**
@@ -29,8 +29,7 @@ public class CollectionHolder {
     private final LinkedList<StudyGroup> collection;
     private static CollectionHolder instance;
     private static Date initDate;
-    private static XMLFileWriter collectionSaver;
-    private static XMLFileReader collectionLoader;
+    CollectionElementsChecker checker = new CollectionElementsChecker();
 
     private CollectionHolder() {
         collection = new LinkedList<>();
@@ -53,31 +52,24 @@ public class CollectionHolder {
         if (instance == null) {
             instance = new CollectionHolder();
             initDate = new Date();
-            collectionSaver = new XMLFileWriter();
-            collectionLoader = new XMLFileReader();
         }
         return instance;
+    }
+    public void setCollection(LinkedList<StudyGroup> collection) {
+        this.collection.clear();
+        this.collection.addAll(collection);
     }
     /**
      * Adds an element to collection and checks it for uniqueness
      */
-    public void addElement(HashMap<String, Object> element) {
+    public void addElement(HashMap<String, Object> element) throws ValidationElementsException {
         StudyGroup studyGroup = new StudyGroup();
         studyGroup.setId();
-        studyGroup.setName((String) element.get("name"));
-        studyGroup.setCoordinates((Coordinates) element.get("coordinates"));
-        studyGroup.setStudentsCount((Long) element.get("studentsCount"));
-        studyGroup.setTransferredStudents((Integer) element.get("transferredStudents"));
-        studyGroup.setFormOfEducation((FormOfEducation) element.get("formOfEducation"));
-        studyGroup.setSemesterEnum((Semester) element.get("semesterEnum"));
-        HashMap<String, Object> adminPar = (HashMap<String, Object>) element.get("groupAdmin");
-        Person admin = new Person();
-        admin.setName((String) adminPar.get("name"));
-        admin.setBirthday((Date) adminPar.get("birthday"));
-        admin.setEyeColor((Color) adminPar.get("eyeColor"));
-        admin.setHairColor((Color) adminPar.get("hairColor"));
-        studyGroup.setGroupAdmin(admin);
+        readFiealds(studyGroup, element);
         collection.add(studyGroup);
+        if (!checkElements(checker)){
+            throw new ValidationElementsException("Wrong object field value");
+        }
         collection.sort(StudyGroup::compareTo);
     }
 
@@ -98,7 +90,7 @@ public class CollectionHolder {
      * @return true if there are no errors
      */
     public boolean checkElements(CollectionElementsChecker checker) {
-        return checker.checkElements();
+        return checker.checkElements(collection);
     }
     /**
      * Clears collection
@@ -132,7 +124,15 @@ public class CollectionHolder {
         return idList;
     }
 
-    public void updateStudyGroup(StudyGroup studyGroup, HashMap<String, Object> pars) {
+    public void updateStudyGroup(StudyGroup studyGroup, HashMap<String, Object> pars) throws ValidationElementsException {
+        readFiealds(studyGroup, pars);
+        if (!checkElements(checker)){
+            throw new ValidationElementsException("Wrong object field value");
+        }
+        collection.sort(StudyGroup::compareTo);
+    }
+
+    private void readFiealds(StudyGroup studyGroup, HashMap<String, Object> pars) {
         studyGroup.setName((String) pars.get("name"));
         studyGroup.setCoordinates((Coordinates) pars.get("coordinates"));
         studyGroup.setStudentsCount((Long) pars.get("studentsCount"));
@@ -146,9 +146,9 @@ public class CollectionHolder {
         admin.setEyeColor((Color) adminPar.get("eyeColor"));
         admin.setHairColor((Color) adminPar.get("hairColor"));
         studyGroup.setGroupAdmin(admin);
-        collection.sort(StudyGroup::compareTo);
     }
-    public void saveCollection(String path) {
-        collectionSaver.save(instance.getCollection(), new File(path));
+
+    public void saveCollection(XMLFileWriter collectionSaver) {
+        collectionSaver.save(instance);
     }
 }

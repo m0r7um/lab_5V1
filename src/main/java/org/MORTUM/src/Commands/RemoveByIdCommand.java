@@ -17,8 +17,8 @@ public final class RemoveByIdCommand extends Command {
 
     @Override
     public void execute(String[] args) {
-        args[0] = args[0].trim();
-        if (args[0].matches("\\d+")) {
+        args[1] = args[1].trim();
+        if (args[1].matches("\\d+")) {
             receiver.getCollection().removeIf(studyGroup -> studyGroup.getId() == Integer.parseInt(args[0]));
         } else {
             System.out.println("Invalid id");

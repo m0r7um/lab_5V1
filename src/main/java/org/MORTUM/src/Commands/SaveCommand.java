@@ -9,15 +9,18 @@ public final class SaveCommand extends Command {
         name = "save";
         description = "Saves the collection to a file";
     }
-    private CollectionHolder receiver;
 
-    public SaveCommand(CollectionHolder receiver) {
+    private CollectionHolder receiver;;
+    private XMLFileWriter writer;
+
+    public SaveCommand(CollectionHolder receiver, XMLFileWriter writer){
         this.receiver = receiver;
+        this.writer = writer;
     }
 
     @Override
     public void execute(String[] args) {
-        receiver.saveCollection(args[1]);
+        receiver.saveCollection(writer);
     }
 
     @Override

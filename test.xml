@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StudyGroups>
     <group>
+        <id>1</id>
+        <name>1</name>
         <coordinates>
             <x>1.0</x>
             <y>1.0</y>
         </coordinates>
-        <creationDate/>
-        <studentsCount>0</studentsCount>
-        <transferredStudents>0</transferredStudents>
+        <creationDate>2023-03-11T11:27:04.269914+03:00[Europe/Moscow]</creationDate>
+        <studentsCount>1</studentsCount>
+        <transferredStudents>1</transferredStudents>
+        <formOfEducation>DISTANCE_EDUCATION</formOfEducation>
+        <semesterEnum>FIRST</semesterEnum>
+        <groupAdmin>
+            <name>1</name>
+            <birthday>0001-01-01T00:00:00+03:00</birthday>
+            <eyeColor>RED</eyeColor>
+            <hairColor>RED</hairColor>
+        </groupAdmin>
     </group>
 </StudyGroups>

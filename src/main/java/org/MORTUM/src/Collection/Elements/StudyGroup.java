@@ -5,6 +5,7 @@ import org.MORTUM.src.Collection.Elements.Fields.Coordinates;
 import org.MORTUM.src.Collection.Elements.Fields.FormOfEducation;
 import org.MORTUM.src.Collection.Elements.Fields.Person;
 import org.MORTUM.src.Collection.Elements.Fields.Semester;
+import org.MORTUM.src.FileProcessing.ZoneDateTimeAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -27,6 +28,7 @@ public class StudyGroup implements Comparable<StudyGroup> {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
+    @XmlJavaTypeAdapter(ZoneDateTimeAdapter.class)
     private java.time.ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     private long studentsCount; //Значение поля должно быть больше 0
     private int transferredStudents; //Значение поля должно быть больше 0

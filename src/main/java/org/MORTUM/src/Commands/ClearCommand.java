@@ -3,6 +3,7 @@ package org.MORTUM.src.Commands;
 import org.MORTUM.src.Collection.CollectionHolder;
 import org.MORTUM.src.Commands.Skeleton.Command;
 import org.MORTUM.src.Commands.Skeleton.Commandable;
+import org.MORTUM.src.Exceptions.UnnecessaryArgumentException;
 
 public final class ClearCommand extends Command {
     {
@@ -16,7 +17,10 @@ public final class ClearCommand extends Command {
     }
 
     @Override
-    public void execute(String[] args) {
+    public void execute(String[] args) throws UnnecessaryArgumentException {
+        if (args.length > 1) {
+            throw new UnnecessaryArgumentException("This command doesn't need any arguments");
+        }
         receiver.clearCollection();
     }
 

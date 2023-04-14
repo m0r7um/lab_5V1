@@ -1,6 +1,9 @@
 package org.MORTUM.src.Collection;
 
 import org.MORTUM.src.Collection.Elements.Fields.*;
+import org.MORTUM.src.Collection.Elements.StudyGroup;
+
+import java.util.LinkedList;
 
 
 /**
@@ -10,54 +13,69 @@ import org.MORTUM.src.Collection.Elements.Fields.*;
  * @version 1.0
  */
 public class CollectionElementsChecker {
-    public boolean checkName(String name) {
-        return name != null && !name.isEmpty();
+    public boolean checkName(StudyGroup element) {
+        return element.getName() != null && !element.getName().isEmpty();
     }
 
-    public boolean checkCoordinates(Coordinates coordinates) {
-        return coordinates != null;
+    public boolean checkCoordinates(StudyGroup element) {
+        return element.getCoordinates() != null &&
+                (element.getCoordinates().getX() < 675) &&
+                element.getCoordinates().getY() != null;
     }
 
-    public boolean checkCreationDate(String creationDate) {
-        return creationDate != null;
+    public boolean checkCreationDate(StudyGroup element) {
+        return element.getCreationDate() != null;
     }
 
-    public boolean checkStudentsCount(Integer studentsCount) {
-        return studentsCount != null && studentsCount > 0;
+    public boolean checkStudentsCount(StudyGroup element) {
+        return element.getStudentsCount() > 0;
     }
 
-    public boolean checkFormOfEducation(FormOfEducation formOfEducation) {
-        return formOfEducation != null;
+    public boolean checkFormOfEducation(StudyGroup element) {
+        return element.getFormOfEducation() != null;
     }
 
-    public boolean checkSemesterEnum(Semester semesterEnum) {
-        return semesterEnum != null;
+    public boolean checkSemesterEnum(StudyGroup element) {
+        return element.getSemesterEnum() != null;
     }
-    public boolean checkTransferredStudents(Integer transferredStudents) {
-        return transferredStudents > 0;
+    public boolean checkTransferredStudents(StudyGroup element) {
+        return element.getTransferredStudents() > 0;
     }
-
-    public boolean checkGroupAdmin(Person groupAdmin) {
-        return groupAdmin != null;
-    }
-
-    public boolean checkPersonName(String personName) {
-        return personName != null && !personName.isEmpty();
+    public boolean checkGroupAdmin(StudyGroup element) {
+        return element.getGroupAdmin() != null;
     }
 
-    public boolean checkPersonHairColor(Color personHairColor) {
-        return personHairColor != null;
+    public boolean checkPersonName(StudyGroup element) {
+        return element.getGroupAdmin().getName() != null && !element.getGroupAdmin().getName().isEmpty();
     }
 
-    public boolean checkPersonBirthday(java.util.Date personBirthday) {
-        return personBirthday != null;
-    }
-    public boolean checkPersonEyeColor(Color personEyeColor) {
-        return personEyeColor != null;
+    public boolean checkPersonHairColor(StudyGroup element) {
+        return element.getGroupAdmin().getHairColor() != null;
     }
 
-    public boolean checkElements() {
+    public boolean checkPersonBirthday(StudyGroup element) {
+        return element.getGroupAdmin().getBirthday() != null;
+    }
+    public boolean checkPersonEyeColor(StudyGroup element) {
+        return element.getGroupAdmin().getEyeColor() != null;
+    }
 
-        return false;
+    public boolean checkElements(LinkedList<StudyGroup> collection) {
+        boolean result = true;
+        for (StudyGroup element : collection){
+            result = result && (checkGroupAdmin(element));
+            result = result && (checkPersonBirthday(element));
+            result = result && (checkPersonEyeColor(element));
+            result = result && (checkPersonName(element));
+            result = result && (checkPersonHairColor(element));
+            result = result && (checkTransferredStudents(element));
+            result = result && (checkSemesterEnum(element));
+            result = result && (checkStudentsCount(element));
+            result = result && (checkFormOfEducation(element));
+            result = result && (checkCreationDate(element));
+            result = result && (checkCoordinates(element));
+            result = result && (checkName(element));
+        }
+        return result;
     }
 }
